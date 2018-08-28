@@ -11,6 +11,12 @@
 #define GREEN "\e[32m" 
 #define BLUE "\e[36m" 
 
+struct dll
+{
+	struct dll* prev;
+	string name;
+	struct dll* next;
+}
 
 void reset_screen()
 {
@@ -25,6 +31,7 @@ char* curr_work_dir()
 
 void display_list(char *curr_dir)
 {
+	reset_screen();
  if( curr_dir==NULL) 
       printf("\n ERROR : Could not get the working directory\n"); 
  DIR *dp = NULL;
