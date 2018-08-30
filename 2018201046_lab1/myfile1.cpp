@@ -41,7 +41,7 @@ void goto_cursor(int x,int y)
  printf("\33[%d;%dH",x,y);
 }
 
-void open_file(char** curr_dir)
+void open_file(char* curr_dir)
 {
  pid_t pid;
  pid=fork();
@@ -51,28 +51,35 @@ void open_file(char** curr_dir)
 }
 else if (pid == 0)
 {	
-	execl("/usr/bin/xdg-open","xdg-open", *curr_dir,(char*)0);
+	execl("/usr/bin/xdg-open","xdg-open", curr_dir,(char*)0);
 	exit(EXIT_SUCCESS);
 }
 }
 
-void display_list(char** curr_dir)
+void display_list(char curr_dir[])
 {  
-   
- if( *curr_dir==NULL) 
+   cout<<curr_dir;
+    fflush(stdout);
+    sleep(3);
+ if( curr_dir==NULL) 
       printf("\n ERROR : Could not get the working directory\n"); 
  DIR *dp = NULL;
- dp = opendir((const char*)*curr_dir); 
+ dp = opendir((const char*)curr_dir); 
  	
  if(dp==NULL) 
  {
+ 
  	open_file(curr_dir);
      // printf("\n ERROR : Could not open the working directory\n"); 
  }
  else
  {
+ 			cout<<"hey";
+ 	   fflush(stdout);
+   sleep(5);
  	nf=0;
- 	reset_screen();
+ 	//reset_screen();
+
   struct dirent *sd;
   struct stat status;
   struct passwd *owner; 
@@ -80,8 +87,8 @@ void display_list(char** curr_dir)
   int i;
   char* ch;
 
-  		char* tcurr_dir = (char*)malloc(strlen(*curr_dir)*sizeof(char));
-  		strcpy(tcurr_dir,*curr_dir);
+  		char* tcurr_dir = (char*)malloc(strlen(curr_dir)*sizeof(char));
+  		strcpy(tcurr_dir,curr_dir);
 
         strcat(tcurr_dir,"/");
         
@@ -89,7 +96,7 @@ void display_list(char** curr_dir)
       while((sd=readdir(dp))!=NULL)
         {
           nf++; 
-          char* temp= (char*)malloc(strlen(tcurr_dir)*sizeof(char));
+          char* temp= (char*)malloc(strlen(curr_dir)*sizeof(char));
           strcpy(temp,tcurr_dir); 
           strcat(temp,sd->d_name);              	       
                stat(temp,&status); 
@@ -145,12 +152,13 @@ void display_list(char** curr_dir)
                        node->prev=node1;
                     }                 
                     free(temp);
-                    free(node);
-        }    
+            
+        }
+        cursor=1;    
+      goto_cursor(0,0);    
       
 }
-      cursor=1;    
-      goto_cursor(0,0);
+      
 }
 
 int main()
@@ -164,10 +172,10 @@ int main()
     new_setting.c_lflag &= ~ICANON;
     new_setting.c_lflag &= ~ECHO;
     tcsetattr(0,TCSANOW,&new_setting);
-  char *curr_dir;
-  curr_dir = curr_work_dir(); //calling current directory function
-
-  display_list(&curr_dir); //calling ls function
+  char curr_dir[1000];
+  //curr_dir = curr_work_dir(); //calling current directory function
+   //cout<<curr_dir<<endl;
+  display_list("/home/divyanshi/2018201046_lab1"); //calling ls function
 
   char c='\0';
  
@@ -190,8 +198,10 @@ int main()
   { 
   	if(cursor<nf)  	  
       	{
+
    	   	cursor++;
    	   	printf("\033[1B");
+   	   	cout<<cursor;
    	   	
    	    }
   }
@@ -201,17 +211,23 @@ int main()
    printf("\033[1D");
   else if(c=='\n')
   {
+  	
   	 dll *tnode=head;
-  	while(cursor>1)
+  	 int tempcount=cursor;
+  	while(tempcount>1)
   	{
   		tnode=tnode->next;
-  		cursor--;
+  		tempcount--;
   	}
 
-  	curr_dir = curr_work_dir();  	
+  	//curr_dir = curr_work_dir(); 
+  	strcpy(curr_dir,"/home/divyanshi/2018201046_lab1"); 	
   	strcat(curr_dir,"/");
-  	strcat(curr_dir,tnode->name);  		  			
-  	display_list(&curr_dir);
+  	strcat(curr_dir,tnode->name); 
+  		 	cout<<curr_dir; 
+
+  		 				
+  	display_list(curr_dir);
   }
 }
 tcsetattr(0,TCSANOW,&initial_setting);

@@ -43,6 +43,7 @@ void goto_cursor(int x,int y)
 
 void open_file(char** curr_dir)
 {
+
  pid_t pid;
  pid=fork();
  if (pid == -1){	
@@ -58,7 +59,7 @@ else if (pid == 0)
 
 void display_list(char** curr_dir)
 {  
-   
+   	
  if( *curr_dir==NULL) 
       printf("\n ERROR : Could not get the working directory\n"); 
  DIR *dp = NULL;
@@ -71,6 +72,7 @@ void display_list(char** curr_dir)
  }
  else
  {
+ 	head=NULL;
  	nf=0;
  	reset_screen();
   struct dirent *sd;
@@ -85,7 +87,7 @@ void display_list(char** curr_dir)
 
         strcat(tcurr_dir,"/");
         
-           
+           //cout<<tcurr_dir<<endl;
       while((sd=readdir(dp))!=NULL)
         {
           nf++; 
@@ -129,13 +131,21 @@ void display_list(char** curr_dir)
                     
                    dll *node1;
                    dll *node=(dll*)malloc(sizeof(dll));  
-                   strcpy(node->name,sd->d_name);   
-                              
+                  // char* tempcurr_dir = (char*)malloc(strlen(*curr_dir)*sizeof(char));
+                   //	strcpy(tempcurr_dir,tcurr_dir);                  
+
+                  
+  	               //strcat(tempcurr_dir,sd->d_name);
+
+                   // cout<<temp<<endl; 
+                   strcpy(node->name,temp);   
+                            
                     node->next=NULL;
                     if(head==NULL) 
                     {
                     	node->prev=NULL;
                        head=node;
+                       cout<<head->name;
                     }
                     else
                     {  node1=head;
@@ -145,9 +155,11 @@ void display_list(char** curr_dir)
                        node->prev=node1;
                     }                 
                     free(temp);
-                    free(node);
+                   // free(node);
+                   // free(tempcurr_dir);
+            
         }    
-      
+      free(tcurr_dir);
 }
       cursor=1;    
       goto_cursor(0,0);
@@ -208,9 +220,9 @@ int main()
   		cursor--;
   	}
 
-  	curr_dir = curr_work_dir();  	
-  	strcat(curr_dir,"/");
-  	strcat(curr_dir,tnode->name);  		  			
+  	curr_dir = tnode->name;  	
+  	//strcat(curr_dir,"/");
+  	//strcat(curr_dir,tnode->name);  		  			
   	display_list(&curr_dir);
   }
 }

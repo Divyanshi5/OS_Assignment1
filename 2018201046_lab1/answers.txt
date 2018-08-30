@@ -1,0 +1,55 @@
+1. mkdir Kachra
+2. pwd
+   echo $HOME
+3. cd Kachra
+   touch Gaitonde.txt
+   cat >> Gaitonde.txt
+   Created by Vikram
+4. mkdir Bhagwan
+   ls Bhagwan 
+   touch Bhagwan
+   cd Bhagwan
+5. cd Bhagwan
+   touch file1
+   touch file2
+   touch file3
+   chmod 651 file1
+   chmod 742 file2
+   chmod 435 file3
+   vi file1  // press i to insert and a to append
+   vi file2
+   vi file3
+6. mkdir Setting
+   cd Setting
+   touch Kukoo.txt Mandir.txt
+7. vi Kukoo.txt
+   i
+   Apun kukoo ke peechhe bhag raha ta // :wq
+   vi Madir.txt
+   i
+   Desh mandir ke peechhe bhag raha ta
+8. cat >> Kukoo.txt
+   By Ganesh Gaitonde
+9. cat Kukoo.txt Mandir.txt
+11.touch Anjali_Mathur.txt
+   mv Anjali_Mathur.txt .Anjali_Mathur.txt
+   cat > .Anjali_Mathur.txt
+   Agar mard field pe kaam karna chahe toh passion. Aur agar aurat karna chahe toh bhoot.
+   chmod 444 .Anjali_Mathur.txt
+12.cat > Mandir.txt   
+   Apun socha jab desh mein PM ka imaan nahi, toh apun seedhe raaste chal ke kya karega?
+13.mkdir -p ScriptingGames/Parulkar/Zoya ScriptingGames/Trivedi ScriptingGames/Sartaj/Megha
+   ScriptingGames/GaneshGaitonde/Cuckoo
+14.cd setting
+   cp -a Mandir.txt ../ScriptingGames/Trivedi
+   cp -a Kukoo.txt ../ScriptingGames/GaneshGaitonde/Kukoo
+15.cp -r ScriptingGames CopyOfScriptingGames
+16.cd ScriptingGames
+   mv GaneshGaitonde Trivedi
+17.ssh divyanshi.kushwaha@web.iiit.ac.in
+   touch Confidential.txt
+18.pwd|tee -a -i Confidential.txt   
+19.scp Confidential.txt divyanshi@10.1.101.195:./2018201046_lab1
+20.tr '[:lower:]' '[:upper:]' < Confidential.txt > Confidential1.txt
+21.rm -r CopyOfScriptingGames
+22. tar -czvf 2018201046_lab1.tar.gz ./2018201046_lab1
