@@ -1,3 +1,5 @@
+#include"command_mode.h"
+
 #include<stdio.h>
 #include <unistd.h>
 #include<dirent.h>
@@ -155,7 +157,13 @@ int main()
   c=getchar();
   if(c==':')
   {
-   break;
+    new_setting=initial_setting;
+     new_setting.c_lflag &= ~ICANON;
+     tcsetattr(0,TCSANOW,&new_setting);
+     tcsetattr(0,TCSANOW,&new_setting);
+     command_mode();
+     new_setting.c_lflag &=~ECHO;
+     tcsetattr(0,TCSANOW,&new_setting);
   }
   if(c=='A')
   { 
@@ -175,21 +183,34 @@ int main()
   }
   else if(c=='C')
   {
+  	if(fhistory.empty())
+  	{
+
+  	}
+  	else{
     bhistory.push(currpath);
    	 currpath=fhistory.top();
    	 fhistory.pop();
    	 curr_dir=(char*)malloc(FILENAME_MAX*sizeof(char));
    	 curr_dir=(char*)currpath.c_str();
    	 v=display_list(&curr_dir);
+   	}
   }
   else if(c=='D')
    {
+   	if(bhistory.empty())
+   	{
+
+   	}
+   	else
+   	{
    	 fhistory.push(currpath);
    	 currpath=bhistory.top();
    	 bhistory.pop();
    	 curr_dir=(char*)malloc(FILENAME_MAX*sizeof(char));
    	 curr_dir=(char*)currpath.c_str();
    	 v=display_list(&curr_dir);
+   	}
    }
   else if(c=='\n')
   {
@@ -197,9 +218,17 @@ int main()
   	{
         fhistory.pop();
   	}
+    string s1(curr_work_dir());
+    s1=s1+"/..";
+    if(v[cursor-1].c_str()==s1)
+    {
+
+    }
+    else
+    {
   	bhistory.push(currpath);
   	curr_dir=(char*)malloc(FILENAME_MAX*sizeof(char));
-  	strcpy(curr_dir,v[cursor-1].c_str());
+  	strcpy(curr_dir,v[cursor-1].c_str());    
   	 path=string(curr_dir);
   	 currpath=path;
      DIR *dp = NULL;
@@ -215,6 +244,7 @@ int main()
   	v=display_list(&curr_dir);
   }
   }
+}
   else if(c==104)
   {
      curr_dir=(char*)malloc(FILENAME_MAX*sizeof(char));
@@ -226,12 +256,22 @@ int main()
   {
   	while(!fhistory.empty())
   		fhistory.pop();
+  	string s1(curr_work_dir());
+    s1=s1+"/..";
 
+
+  	if(s1==path)
+  	{
+
+  	}
+    else
+    {
     curr_dir=(char*)malloc(FILENAME_MAX*sizeof(char));
     path=path+"/..";
      strcpy(curr_dir,path.c_str());
       path=string(curr_dir);
      v=display_list(&curr_dir);
+ }
   }
 
 }
