@@ -6,7 +6,7 @@
 #include<termios.h>
 #include<vector>
 using namespace std;
-void command_mode()
+string command_mode(string currentpath)
 {
 	
 	//cout<<"\t\t\t\t\t\t\tCOMMAND MODE\n";
@@ -22,8 +22,7 @@ char path[1000];
   vector<string> cmds;
   c=getchar();
   if(c==27)
-   // cout<<"hii";
-    //return;
+       return currentpath;
   while(c!=10)
   {
      path[i++]=c;
@@ -39,8 +38,17 @@ char path[1000];
         token = strtok(NULL, " ");
       }
  
-    
-     if(cmds[0]=="copy")
+    string s=cmds[l-1];
+    if(s[0]=='/')
+    {
+       cmds[l-1]="."+cmds[l-1];
+    }
+    else if(s[0]=='.')
+    {
+      cmds[l-1]=currentpath+cmds[l-1].substr(1,cmds[l-1].length()-1);
+    }
+
+     if(cmds[0]=="copy")   
     {
         for(int i=1;i<l-1;i++)
         {                      
@@ -62,6 +70,17 @@ char path[1000];
     else if(cmds[0]=="delete_file")
     {
        delete_file(cmds[1]);
+    }
+    else if(cmds[0]=="move")
+    {
+         for(int i=1;i<l-1;i++)
+        {                      
+          move_file(cmds[i],cmds[l-1]);
+        }
+    }
+    else if(cmds[0]=="goto")
+    {
+        return cmds[l-1];
     }
  	
  }

@@ -134,7 +134,7 @@ int main()
   	 new_setting.c_lflag &= ~ICANON;
   	 tcsetattr(0,TCSANOW,&new_setting);
       //cout<<"colon";
-     command_mode();  
+     string new_path=command_mode(currpath);  
      //break;   
      new_setting=initial_setting;
      new_setting.c_lflag &= ~ICANON;
@@ -142,7 +142,16 @@ int main()
      tcsetattr(0,TCSANOW,&new_setting);
      goto_cursor(0,0);
      cursor=1;
-  	
+     if(currpath==new_path)
+     {
+
+     }
+     else
+     {
+     curr_dir=(char*)malloc(FILENAME_MAX*sizeof(char));
+     curr_dir=(char*)new_path.c_str();
+     v=display_list(&curr_dir);
+  	}
   }
   if(c=='A')
   { 

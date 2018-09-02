@@ -11,6 +11,7 @@ using namespace std;
 		
 		int in,out;
 		char c[20];
+		destination=destination+"/"+source;
 	in=open(source.c_str(),O_RDONLY);
 	out=open(destination.c_str(),O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
 	while(read(in,&c,1)==1)
@@ -33,4 +34,9 @@ using namespace std;
     void delete_file(string path)
     {
     	remove(path.c_str());
+    }
+    void move_file(string source, string destination)
+    {
+    	destination=destination+"/"+source;        
+    	rename(source.c_str(), destination.c_str());
     }
